@@ -1,0 +1,20 @@
+-> Peguei o docker-compose.yml e transformei em diversos objetos do Kubernetes a partir do Kompose
+-> A partir disso, analisei cada objeto e possíveis irregularidades. Os principais problemas foram:
+  - O volume do postgres. Por alguma razão, meu usuário não tem permissão para criar um 
+    volume dentro da minha máquina. Fiz com que este container (pg) não possua volume.
+    O maior problema com isso é que caso a máquina falhe e reinicie, perderá os dados.
+  - O segundo maior problema foi substituir a conexão que o docker-compose permite a partir da propriedade link. 
+    Sabemos que máquinas no mesmo cluster do kubernetes estão na mesma rede. 
+    O problema estava no usuário e senha do postgres. A máquina do Sentry não detalha isso.
+    O que fiz foi fazer com que o Deploy da máquina do postgres não possuíse usuário ou senha.
+    Desta forma, ele recebe o valor padrão: usuário postgres e senha vazio;
+    Sendo assim, conseguimos entrar no banco a partir da máquina do postgres e rodar o upgrade do banco.
+
+
+# Need to install all services:
+kubectl apply -f kubernetes/
+
+# exec the sentry pod and execute upgrade to install the database on postgres:
+kubectl exec -it <pod sentry> sentry upgrade
+
+# Now all is fine and running

@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sentry-worker
+  name: sentry-worker
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: sentry-worker
+    spec:
+      containers:
+      - args:
+        - run
+        - worker
+        env:
+        - name: SENTRY_EMAIL_HOST
+          value: 'smtp.gmail.com'
+        - name: SENTRY_EMAIL_PASSWORD
+          value: '@#Pol1chat'
+        - name: SENTRY_EMAIL_PORT
+          value: "587"
+        - name: SENTRY_EMAIL_USER
+          value: 'polichat.web@gmail.com'
+        - name: SENTRY_EMAIL_USE_TLS
+          value: "true"
+        - name: SENTRY_SECRET_KEY
+          value: 'voy@q&%7((f&k7jpv-+11^xo^)^4fj5tm+#r!i(pr2vn3j6*c_'
+        image: sentry:9.1.1
+        name: sentry-worker
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,90 @@
+version: '3.2'
+
+volumes:
+  sentry:
+  redis-data:
+  pg-data:
+
+services:
+  sentry:
+    container_name: sentry
+    image: sentry:9.1.1
+    network_mode: bridge
+    restart: always
+    volumes:
+      - sentry:/var/lib/sentry/files
+    ports:
+      - '9090:9000'
+    links:
+      - redis
+      - postgres
+    tty: true
+    stdin_open: true
+    environment:
+      - SENTRY_SECRET_KEY='voy@q&%7((f&k7jpv-+11^xo^)^4fj5tm+#r!i(pr2vn3j6*c_'
+      - VIRTUAL_HOST=sentry.polichat.com.br
+      - LETSENCRYPT_HOST=sentry.polichat.com.br
+      - LETSENCRYPT_EMAIL=webmaster@polichat.com.br
+      - SENTRY_EMAIL_HOST='smtp.gmail.com'
+      - SENTRY_EMAIL_PORT=587
+      - SENTRY_EMAIL_USER='polichat.web@gmail.com'
+      - SENTRY_EMAIL_PASSWORD='@#Pol1chat'
+      - SENTRY_EMAIL_USE_TLS=true
+
+
+  sentry-cron:
+    container_name: sentry-cron
+    image: sentry:9.1.1
+    network_mode: bridge
+    restart: always
+    command: run cron
+    links:
+      - postgres
+      - redis
+    environment:
+      - SENTRY_SECRET_KEY='voy@q&%7((f&k7jpv-+11^xo^)^4fj5tm+#r!i(pr2vn3j6*c_'
+      - SENTRY_EMAIL_HOST='smtp.gmail.com'
+      - SENTRY_EMAIL_PORT=587
+      - SENTRY_EMAIL_USER='polichat.web@gmail.com'
+      - SENTRY_EMAIL_PASSWORD='@#Pol1chat'
+      - SENTRY_EMAIL_USE_TLS=true
+
+  sentry-worker:
+    container_name: sentry-worker
+    image: sentry:9.1.1
+    network_mode: bridge
+    restart: always
+    command: run worker
+    links:
+      - postgres
+      - redis
+    environment:
+      - SENTRY_SECRET_KEY='voy@q&%7((f&k7jpv-+11^xo^)^4fj5tm+#r!i(pr2vn3j6*c_'
+      - SENTRY_EMAIL_HOST='smtp.gmail.com'
+      - SENTRY_EMAIL_PORT=587
+      - SENTRY_EMAIL_USER='polichat.web@gmail.com'
+      - SENTRY_EMAIL_PASSWORD='@#Pol1chat'
+      - SENTRY_EMAIL_USE_TLS=true
+
+  redis:
+    container_name: redis
+    image: redis:5.0
+    network_mode: bridge
+    restart: always
+    volumes:
+      - redis-data:/data
+    ports:
+      - '6379:6379'
+
+  postgres:
+    container_name: postgres
+    image: postgres:9.5
+    network_mode: bridge
+    restart: always
+    environment:
+      - POSTGRES_USER=sentry
+      - POSTGRES_PASSWORD=secret
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'

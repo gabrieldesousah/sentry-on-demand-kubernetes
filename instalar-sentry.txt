@@ -1,0 +1,40 @@
+
+- Baixe o arquivo "docker-compose.yml" para uma pasta nomeada "sentry", caso não use pipeline Git
+- Crie e preencha a Secret Key SENTRY_SECRET_KEY com uma string random 32 char
+  (Obs.: o comando anaixo cria e destrói um container com a finalidade de criar uma senha)
+  command: docker run --rm sentry:8.10.0 config generate-secret-key
+
+- Execute o comando para criar os containeres:
+  docker-compose up -d
+- Execute "docker-compose exec sentry sentry upgrade" para configurar o banco de dados e criar o usuário "admin"
+    (Optional) Execute "docker-compose exec sentry pip install sentry-slack" se desejar instalar o plugin do slack, mas isso pode ser feito mais tarde quando você quiser
+- Execute o comando "docker-compose restart sentry"
+  Sentry estará rodando na porta pública 9090
+
+CLI REFERÊNCIA:
+https://docs.sentry.io/server/cli/
+
+CRIAR USUÁRIO:
+docker-compose exec sentry sentry createuser
+
+
+-------
+INSTALAR NGINX PARA PROXY REVERSO:
+
+https://medium.com/sentry-with-docker/installing-sentry-with-docker-c1d83dfee577
+
+https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/
+
+cd /etc/nginx/sites-available/
+
+location /some/path/ {
+    proxy_pass http://127.0.0.1:9090;
+}
+
+cd /home/ubuntu
+
+
+------
+COLOCAR SSL NO NGINX COM CERTBOT E LET'S ENCRYPT
+https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04
+

@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sentry
+  name: sentry
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: sentry
+    spec:
+      containers:
+      - env:
+        - name: LETSENCRYPT_EMAIL
+          value: webmaster@polichat.com.br
+        - name: LETSENCRYPT_HOST
+          value: sentry.polichat.com.br
+        - name: SENTRY_EMAIL_HOST
+          value: 'smtp.gmail.com'
+        - name: SENTRY_EMAIL_PASSWORD
+          value: '@#Pol1chat'
+        - name: SENTRY_EMAIL_PORT
+          value: "587"
+        - name: SENTRY_EMAIL_USER
+          value: 'polichat.web@gmail.com'
+        - name: SENTRY_EMAIL_USE_TLS
+          value: "true"
+        - name: SENTRY_SECRET_KEY
+          value: 'voy@q&%7((f&k7jpv-+11^xo^)^4fj5tm+#r!i(pr2vn3j6*c_'
+        - name: VIRTUAL_HOST
+          value: sentry.polichat.com.br
+
+        image: sentry:9.1.1
+        name: sentry
+        ports:
+        - containerPort: 9000
+        resources: {}
+        stdin: true
+        tty: true
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: sentry
+      restartPolicy: Always
+      volumes:
+      - name: sentry
+        persistentVolumeClaim:
+          claimName: sentry
+status: {}

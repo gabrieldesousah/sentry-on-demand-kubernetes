@@ -13,10 +13,10 @@
 
 * Need to install postgres volume:
 - In localhost:
-```kubectl apply -f local/```
+```kubectl apply -f kubernetes/local/```
 
 - In AWS:
-```kubectl apply -f local/```
+```kubectl apply -f kubernetes/aws/```
 
 * Need to install all services:
 ```kubectl apply -f kubernetes/```

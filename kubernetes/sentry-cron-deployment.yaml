@@ -21,26 +21,10 @@ spec:
       - args:
         - run
         - cron
-        env:
-        - name: SENTRY_EMAIL_HOST
-          value: 'smtp.gmail.com'
-        - name: SENTRY_EMAIL_PASSWORD
-          value: '@#Pol1chat'
-        - name: SENTRY_EMAIL_PORT
-          value: "587"
-        - name: SENTRY_EMAIL_USER
-          value: 'polichat.web@gmail.com'
-        - name: SENTRY_EMAIL_USE_TLS
-          value: "true"
-        - name: SENTRY_SECRET_KEY
-          value: 'voy@q&%7((f&k7jpv-+11^xo^)^4fj5tm+#r!i(pr2vn3j6*c_'
-        - name: SENTRY_DB_NAME
-          value: postgres
-        - name: SENTRY_DB_USER
-          value: secret
-        - name: SENTRY_DB_PASSWORD
-          value: sentry
-        image: sentry:9.1.1
+        envFrom:
+          - configMapRef: 
+              name: sentry-configmap
+        image: sentry:9.1.2
         name: sentry-cron
         resources: {}
       restartPolicy: Always

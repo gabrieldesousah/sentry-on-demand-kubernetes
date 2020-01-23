@@ -1,0 +1,29 @@
+# How do we want it implemented
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-pg-1
+spec:
+  storageClassName: pg-storage
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/kubernetes/data/pg-01/"
+    type: DirectoryOrCreate
+
+# ---
+#   apiVersion: v1
+#   kind: PersistentVolume
+#   metadata:
+#     name: local-storage-pg-2
+#   spec:
+#     storageClassName: pg-storage
+#     capacity:
+#       storage: 20Gi
+#     accessModes:
+#       - ReadWriteOnce
+#     hostPath:
+#       path: "/mnt/kubernetes/data/pg-02/"
+#       type: DirectoryOrCreate

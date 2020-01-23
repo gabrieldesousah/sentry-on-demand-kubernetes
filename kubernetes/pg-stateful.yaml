@@ -1,0 +1,38 @@
+---
+  kind: StatefulSet
+  apiVersion: apps/v1
+  metadata:
+    name: postgres-statefulset
+  spec:
+    serviceName: "postgres"
+    replicas: 1
+    selector:
+      matchLabels:
+        app: "postgres"
+    template:
+      metadata:
+        labels:
+          app: postgres
+      spec:
+        containers:
+        - name: postgres-image
+          image: postgres:12
+          envFrom:
+            - configMapRef:
+                name: postgres-configmap
+          ports:
+          - name: postgres-port
+            containerPort: 5432
+          volumeMounts:
+          - name: postgres-volume
+            mountPath: /var/lib/postgresql/data
+            subPath: postgres
+    volumeClaimTemplates:
+    - metadata: 
+        name: postgres-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: pg-storage
+        resources:
+          requests:
+            storage: 20Gi

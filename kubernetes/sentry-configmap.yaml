@@ -1,0 +1,20 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: sentry-configmap
+  labels:
+    app: sentry
+data:
+  LETSENCRYPT_EMAIL: webmaster@polichat.com.br
+  LETSENCRYPT_HOST: sentry.polichat.com.br
+  SENTRY_EMAIL_HOST: 'smtp.gmail.com'
+  SENTRY_EMAIL_PASSWORD: '@#Pol1chat'
+  SENTRY_EMAIL_PORT: "587"
+  SENTRY_EMAIL_USER: 'polichat.web@gmail.com'
+  SENTRY_EMAIL_USE_TLS: "true"
+  SENTRY_SECRET_KEY: 'voy@q&%7((f&k7jpv-+11^xo^)^4fj5tm+#r!i(pr2vn3j6*c_'
+  VIRTUAL_HOST: sentry.polichat.com.br
+  SENTRY_POSTGRES_HOST: postgres-service
+  SENTRY_DB_NAME: postgres
+  SENTRY_DB_USER: secret
+  SENTRY_DB_PASSWORD: sentry

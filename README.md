@@ -12,16 +12,16 @@
 # On Kubernetes:
 
 * Need to install postgres volume:
--- In localhost:
-kubectl apply -f local/
+- In localhost:
+```kubectl apply -f local/```
 
--- In AWS:
-kubectl apply -f local/
+- In AWS:
+```kubectl apply -f local/```
 
 * Need to install all services:
-kubectl apply -f kubernetes/
+```kubectl apply -f kubernetes/```
 
 * exec the sentry pod and execute upgrade to install the database on postgres:
-kubectl exec -it <pod sentry> sentry upgrade
+```kubectl exec -it <pod sentry> sentry upgrade```
 
 * Now all is fine and running

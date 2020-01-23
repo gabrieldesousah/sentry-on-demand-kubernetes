@@ -11,6 +11,13 @@
 
 # On Kubernetes:
 
+* Need to install postgres volume:
+-- In localhost:
+kubectl apply -f local/
+
+-- In AWS:
+kubectl apply -f local/
+
 * Need to install all services:
 kubectl apply -f kubernetes/
 

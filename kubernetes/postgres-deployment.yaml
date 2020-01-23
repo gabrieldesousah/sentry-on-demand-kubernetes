@@ -20,18 +20,21 @@ spec:
     spec:
       containers:
       - image: postgres:9.5
-        # env:
-        # - name: POSTGRES_PASSWORD
-        #   value: secret
-        # - name: POSTGRES_USER
-        #   value: sentry
+        env:
+        - name: POSTGRES_DB
+          value: postgres
+        - name: POSTGRES_USER
+          value: secret
+        - name: POSTGRES_PASSWORD
+          value: sentry
         name: postgres
         ports:
         - containerPort: 5432
         resources: {}
         # volumeMounts:
-        # - mountPath: /var/lib/postgresql/data
-        #   name: pg-data
+        # - name: pg-data
+        #   mountPath: /var/lib/postgresql/data
+        #   subPath: postgres
       restartPolicy: Always
       # volumes:
       # - name: pg-data
